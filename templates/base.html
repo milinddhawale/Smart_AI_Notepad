@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width" , initial-scale="1.0">
+    <title>{% block title %}{% endblock %} - smart Notepad</title>
+    <link rel="stylesheet" href="{{ url_for('static' , filename='css/style.css') }}">
+</head>
+<body>
+    <nav>
+        <div class="nav-wrapper">
+            <a href="{{ url_for('index') }}" class="brand"> Smart Notepad</a>
+            <div class="nav-links">
+                {% if current_user.is_authenticated %}
+                    <a href="{{ url_for('notes.list')}}"> My Notes</a>
+                    <a href="{{url_for('auth.logout')}}"> Logout </a>
+                {% else %}
+                    <a href="{{ url_for('auth.login') }}">Login</a>
+                    <a href="{{ url_for('auth.register') }}">Register</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        {% with message = get_flashed_message() %}
+            {% if message %}
+                {% for message in message %}
+                     <div class="alert">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </div>
+
+    <script src="{{ url_for('static', filename = 'js/main.js') }}"></script>
+</body>
+</html>
